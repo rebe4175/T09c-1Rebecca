@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hogwarts Student List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<style>
+
+.container {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+article {
+
+    border: 1px dotted green;
+}
+
+</style>
+
+<body>
+
+<div class="container">
+
+<template>
+
+    <article>
+
+      <p data-fullname></p>
+      <p data-house></p>
+
+    </article>
+
+</template>
+
+</div>
+
+
+</body>
+
+</html>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", getJson);
+
+let students;
+let postContainer = document.querySelector(".container");
+let template = document.querySelector("template");
+
+async function getJson() {
+
+let myJson = await fetch("http://petlatkea.dk/2019/students1991.json?fbclid=IwAR2VKYslKOkr6797_NdGE2DMpVjP8Ta8-_0RMGpuJPzQONL3OXUNok-7j9g");
+
+students = await myJson.json();
+
+showList();
+
+}
+
+function showList() {
+
+    console.log(students);
+
+    students.forEach(student => {
+
+       let clone = template.cloneNode(true).content;
+
+       clone.querySelector("[data-fullname]").textContent = student.fullname;
+       clone.querySelector("[data-house]").textContent = student.house;
+
+       postContainer.appendChild(clone);
+
+    });
+
+    }
+
+</script>
